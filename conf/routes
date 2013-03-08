@@ -1,0 +1,58 @@
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+GET		/echo						controllers.Application.echo
+
+# 这是注释
+# HTTP方法可以是任何HTTP支持的方法（GET，POST，PUT，DELETE，HEAD）
+
+# 静态URI
+GET		/clients/all				controllers.Clients.list()
+GET		/clients/					controllers.Clients.list()
+
+# URI动态部分
+# 动态部分的默认匹配策略被正则式 [^/]+ 定义，意味着任何定义了 :id 的动态部份都将被完全匹配。
+# 参数类型: 对于String类型的参数，输入参数是可选的。如果你要玩改造，传入一个特定Scala类型的参数，明确指定(如Long)
+GET		/clients/:id				controllers.Clients.show(id: Long)
+
+# 如果你想捕获多个动态部分，被斜线分隔，你可以使用 *id 语法定义动态部分，它將使用 .* 正则规则
+GET		/files/*name				controllers.Application.download(name)
+
+# 使用正则式定义动态部分，利用 $id<regex>语法
+GET		/users/$id<[0-9]+>			controllers.Users.show(id: Long)
+
+# Extract the page parameter from the path.
+GET		/pages/:page						controllers.Application.show(page)
+# Extract the page parameter from the query string.
+GET		/pages/						controllers.Application.show(page)
+
+# 定值参数
+# GET		/							controllers.Application.show(page = "home")
+
+# 默认值参数
+# GET			/clients					controllers.Clients.list(page: Int ?= 1)
+
+# 路由优先级
+# 许多URL路径都可满足匹配要求。如果有冲突，采用先声明先使用的原则。
+
+# 反转路由
+GET		/hello/:name				controllers.Application.hello(name)
+GET		/helloBob					controllers.Application.helloBob
+
+# Optional parameters
+# The version parameter is optional. E.g. /api/list-all?version=3.0
+#GET   /api/list-all         controllers.Api.list(Option[version])
+
+GET		/users/find					controllers.http.ActionComposition.index5
+
+#AsynResult
+GET		/asyn/eof					controllers.asynhttp.ChunkedResponses.eof
+GET		/asyn/comet					controllers.asynhttp.CometSockets.comet
+GET		/asyn/comet2				controllers.asynhttp.CometSockets.comet2
+GET		/asyn/comet3				controllers.asynhttp.CometSockets.comet3
